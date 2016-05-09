@@ -1064,7 +1064,12 @@ TESTS = [
         "dependencies": [MBED_LIBRARIES, TEST_MBED_LIB, CPPUTEST_LIBRARY],
         "automated": False,
     },
-
+    {
+        "id": "gh_816", "description": "Ticket 816",
+        "source_dir": join(TEST_DIR, "mbed", "gh_816"),
+        "dependencies": [MBED_LIBRARIES, TEST_MBED_LIB, CPPUTEST_LIBRARY],
+        "automated": False,
+    },
     # Tests used for target information purposes
     {
         "id": "DTCT_1", "description": "Simple detect test",
