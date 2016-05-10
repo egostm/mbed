@@ -1,9 +1,9 @@
-;******************** (C) COPYRIGHT 2015 STMicroelectronics ********************
+;******************** (C) COPYRIGHT 2016 STMicroelectronics ********************
 ;* File Name          : startup_stm32f429xx.s
 ;* Author             : MCD Application Team
-;* Version            : V2.4.0
-;* Date               : 14-August-2015
-;* Description        : STM32F429x devices vector table for MDK-ARM_MICRO toolchain. 
+;* Version            : V2.4.3
+;* Date               : 22-January-2016
+;* Description        : STM32F429x devices vector table for MDK-ARM toolchain. 
 ;*                      This module performs:
 ;*                      - Set the initial SP
 ;*                      - Set the initial PC == Reset_Handler
@@ -48,10 +48,8 @@
 Stack_Size      EQU     0x00000400
 
                 AREA    STACK, NOINIT, READWRITE, ALIGN=3
-                EXPORT  __initial_sp
-                
 Stack_Mem       SPACE   Stack_Size
-__initial_sp    EQU     0x20020000 ; Top of RAM
+__initial_sp
 
 
 ; <h> Heap Configuration
@@ -61,12 +59,9 @@ __initial_sp    EQU     0x20020000 ; Top of RAM
 Heap_Size       EQU     0x00000200
 
                 AREA    HEAP, NOINIT, READWRITE, ALIGN=3
-                EXPORT  __heap_base
-                EXPORT  __heap_limit
-                
 __heap_base
 Heap_Mem        SPACE   Heap_Size
-__heap_limit    EQU (__initial_sp - Stack_Size)
+__heap_limit
 
                 PRESERVE8
                 THUMB
@@ -438,6 +433,33 @@ DMA2D_IRQHandler
                 ENDP
 
                 ALIGN
-                END
+
+;*******************************************************************************
+; User Stack and Heap initialization
+;*******************************************************************************
+                 IF      :DEF:__MICROLIB
+                
+                 EXPORT  __initial_sp
+                 EXPORT  __heap_base
+                 EXPORT  __heap_limit
+                
+                 ELSE
+                
+                 IMPORT  __use_two_region_memory
+                 EXPORT  __user_initial_stackheap
+                 
+__user_initial_stackheap
+
+                 LDR     R0, =  Heap_Mem
+                 LDR     R1, =(Stack_Mem + Stack_Size)
+                 LDR     R2, = (Heap_Mem +  Heap_Size)
+                 LDR     R3, = Stack_Mem
+                 BX      LR
+
+                 ALIGN
+
+                 ENDIF
+
+                 END
 
 ;************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE*****
