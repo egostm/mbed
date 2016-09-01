@@ -74,21 +74,6 @@ struct spi_s {
     PinName pin_ssel;
 };
 
-struct i2c_s {
-    I2CName  i2c;
-    I2C_HandleTypeDef handle;
-    IRQn_Type event_i2cIRQ;
-    IRQn_Type error_i2cIRQ;
-    uint32_t slave;
-#if DEVICE_I2C_ASYNCH
-    uint32_t event;
-    uint32_t address;
-    uint32_t stop;
-    uint32_t available_events;
-    uint32_t XferOperation;
-#endif
-};
-
 #include "common_objects.h"
 #include "gpio_object.h"
 
