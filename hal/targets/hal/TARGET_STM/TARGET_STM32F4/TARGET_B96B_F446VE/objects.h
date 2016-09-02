@@ -79,11 +79,6 @@ struct spi_s {
     PinName pin_ssel;
 };
 
-struct i2c_s {
-    I2CName  i2c;
-    uint32_t slave;
-};
-
 struct can_s {
     CANName can;
     int index; // Used by irq	
